@@ -1,11 +1,13 @@
+from typing import Dict
 from .column import Column
+from .types import RowT, RowKeyT, ColKeyT, ObjT
 
 
 class ReportRow:
-    def __init__(self, report, obj, row_key):
+    def __init__(self, report, obj: RowT, row_key: RowKeyT):
         self.key = row_key
         self.report = report
-        self.columns = {}
+        self.columns: Dict[ColKeyT, ObjT] = {}
 
         # will be used while rendering report as key object for row
         self.obj = obj
@@ -14,7 +16,7 @@ class ReportRow:
             if callable(_init):
                 _init(self)
 
-    def append(self, col_key, obj):
+    def append(self, col_key: ColKeyT, obj: ObjT):
         col = self.columns.setdefault(col_key, Column(self, col_key))
         col.append(obj)
 
